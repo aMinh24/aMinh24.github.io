@@ -76,6 +76,62 @@
     font-size: 12px; color: #0f380f;
     margin: 0 0 14px; letter-spacing: 1px;
   }
+  /* ---- Mini game ---- */
+  .game-section { display: none; margin-bottom: 28px; }
+  .game-section.show { display: block; }
+  .hud {
+    display: flex; justify-content: space-between; gap: 12px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px; color: #0f380f;
+    margin-bottom: 12px;
+  }
+  .hud span { background: #8bac0f; border: 3px solid #0f380f; padding: 8px 10px; }
+  #gameMsg { font-family: 'Be Vietnam Pro', sans-serif; font-size: 14px; font-weight: 700; }
+  #gameCanvas {
+    width: 100%; height: auto;
+    display: block;
+    image-rendering: pixelated;
+    border: 4px solid #0f380f;
+    box-shadow: 4px 4px 0 #306230;
+    background: #8bac0f;
+  }
+  .dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 56px);
+    grid-template-rows: repeat(2, 52px);
+    gap: 6px;
+    justify-content: center;
+    margin-top: 14px;
+  }
+  .dpad button {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px; color: #9bbc0f;
+    background: #0f380f;
+    border: 0;
+    box-shadow: 0 4px 0 #306230;
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .dpad button:active { transform: translateY(3px); box-shadow: 0 1px 0 #306230; }
+  .dpad .up { grid-column: 2; grid-row: 1; }
+  .dpad .left { grid-column: 1; grid-row: 2; }
+  .dpad .down { grid-column: 2; grid-row: 2; }
+  .dpad .right { grid-column: 3; grid-row: 2; }
+  .win {
+    display: none;
+    background: #0f380f;
+    color: #9bbc0f;
+    border: 4px solid #0f380f;
+    padding: 18px;
+    margin-top: 14px;
+    font-size: 16px; line-height: 1.6;
+    text-align: center;
+  }
+  .win.show { display: block; }
+  .win b { font-family: 'Press Start 2P', monospace; font-size: 13px; }
+  /* ---- Invite info ---- */
   .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 28px; }
   @media (max-width: 560px) { .info-grid { grid-template-columns: 1fr; } }
   .panel {
@@ -97,6 +153,7 @@
     font-size: 16px; font-weight: 700;
   }
   .quest li::before { content: "□ "; color: #0f380f; font-size: 18px; }
+  .quest li.done::before { content: "■ "; }
   .note {
     background: #8bac0f;
     border: 3px solid #0f380f;
@@ -151,6 +208,25 @@
     <div class="dialogue" id="dialogue">
       <div class="name">MINH:</div>
       <span id="dialogueText"></span><span class="cursor">▌</span>
+    </div>
+
+    <div class="game-section" id="gameSection">
+      <div class="section-title">■ MINI GAME — DEN SANH A</div>
+      <div class="hud">
+        <span id="bagCount">TUI MU: 0/3</span>
+        <span id="gameMsg">Thu thập 3 túi mù rồi vào Sảnh A!</span>
+      </div>
+      <canvas id="gameCanvas" width="320" height="240"></canvas>
+      <div class="dpad">
+        <button class="up" data-dx="0" data-dy="-1">▲</button>
+        <button class="left" data-dx="-1" data-dy="0">◀</button>
+        <button class="down" data-dx="0" data-dy="1">▼</button>
+        <button class="right" data-dx="1" data-dy="0">▶</button>
+      </div>
+      <div class="win" id="winBanner">
+        <b>QUEST COMPLETE!</b><br>
+        Bạn đã đến Sảnh A — hẹn gặp 9:30, Thứ Sáu 23/10 nhé!
+      </div>
     </div>
 
     <div class="section-title">■ THONG TIN BUOI LE</div>
@@ -257,20 +333,184 @@
     "..............",
   ], { G: '#0f380f', B: '#306230' }, 10);
 
+  /* ============ MINI GAME ============ */
+  const TILE = 16, COLS = 20, ROWS = 15;
+  const gameCanvas = document.getElementById('gameCanvas');
+  const gctx = gameCanvas.getContext('2d');
+  gctx.imageSmoothingEnabled = false;
+
+  const TREES = [[3,4],[16,4],[4,9],[15,10]];
+  const DOOR = [[9,1],[10,1]];
+  let bags = [[4,6],[15,6],[10,11]].map(([x,y]) => ({ x, y, got: false }));
+  let player = { x: 10, y: 13 };
+  let pxPos = { x: 10 * TILE, y: 13 * TILE };
+  let moving = false, gameStarted = false, won = false, bagsGot = 0;
+
+  const spriteImg = new Image();
+  spriteImg.onload = drawGame;
+  spriteImg.onerror = drawGame;
+  spriteImg.src = 'data:image/png;base64,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';
+
+  function isTree(x, y) { return TREES.some(([tx, ty]) => tx === x && ty === y); }
+  function isDoor(x, y) { return DOOR.some(([dx, dy]) => dx === x && dy === y); }
+  function isBlocked(x, y) {
+    if (x < 0 || x >= COLS || y < 0 || y >= ROWS) return true;
+    if (y <= 1 && !isDoor(x, y)) return true; // building wall
+    if (isTree(x, y)) return true;
+    return false;
+  }
+
+  function drawBag(gx, gy) {
+    const ox = gx * TILE, oy = gy * TILE;
+    gctx.fillStyle = '#0f380f';
+    gctx.fillRect(ox + 2, oy + 5, 12, 9);   // box
+    gctx.fillStyle = '#9bbc0f';
+    gctx.fillRect(ox + 7, oy + 5, 2, 9);   // ribbon vertical
+    gctx.fillRect(ox + 2, oy + 8, 12, 2);  // ribbon horizontal
+    gctx.fillRect(ox + 3, oy + 2, 3, 3);   // bow left
+    gctx.fillRect(ox + 10, oy + 2, 3, 3);  // bow right
+  }
+
+  function drawTree(tx, ty) {
+    const ox = tx * TILE, oy = ty * TILE;
+    gctx.fillStyle = '#0f380f';
+    gctx.fillRect(ox + 2, oy + 1, 12, 9);  // canopy
+    gctx.fillRect(ox + 1, oy + 3, 14, 5);
+    gctx.fillStyle = '#306230';
+    gctx.fillRect(ox + 4, oy + 3, 3, 3);   // highlight
+    gctx.fillStyle = '#0f380f';
+    gctx.fillRect(ox + 7, oy + 10, 2, 5);  // trunk
+  }
+
+  function drawPlayer() {
+    const cx = pxPos.x + TILE / 2;
+    const feetY = pxPos.y + TILE;
+    if (spriteImg.complete && spriteImg.naturalWidth > 0) {
+      const dw = 18, dh = dw * (spriteImg.naturalHeight / spriteImg.naturalWidth);
+      gctx.drawImage(spriteImg, cx - dw / 2, feetY - dh, dw, dh);
+    } else {
+      // Fallback: simple pixel person (cap + gown)
+      gctx.fillStyle = '#0f380f';
+      gctx.fillRect(cx - 6, feetY - 30, 12, 3);  // cap board
+      gctx.fillRect(cx - 4, feetY - 27, 8, 4);   // head
+      gctx.fillRect(cx - 5, feetY - 23, 10, 18); // gown
+      gctx.fillRect(cx - 5, feetY - 5, 3, 5);    // leg
+      gctx.fillRect(cx + 2, feetY - 5, 3, 5);
+    }
+  }
+
+  function drawGame() {
+    // Grass
+    for (let y = 0; y < ROWS; y++) {
+      for (let x = 0; x < COLS; x++) {
+        gctx.fillStyle = ((x + y) % 2 === 0) ? '#8bac0f' : '#9bbc0f';
+        if (y <= 1) gctx.fillStyle = '#8bac0f';
+        gctx.fillRect(x * TILE, y * TILE, TILE, TILE);
+      }
+    }
+    // Path to the door
+    gctx.fillStyle = '#9bbc0f';
+    for (let y = 2; y < ROWS; y++) {
+      gctx.fillRect(9 * TILE, y * TILE, TILE * 2, TILE);
+    }
+    // Building
+    gctx.fillStyle = '#306230';
+    for (let x = 0; x < COLS; x++) {
+      if (isDoor(x, 1)) continue;
+      gctx.fillRect(x * TILE, 0, TILE, TILE);
+      gctx.fillRect(x * TILE, TILE, TILE, TILE);
+    }
+    gctx.fillStyle = '#0f380f';
+    gctx.fillRect(0, 0, COLS * TILE, 4); // roof edge
+    // Door + sign
+    gctx.fillStyle = '#0f380f';
+    gctx.fillRect(9 * TILE, TILE, TILE * 2, TILE);
+    gctx.fillStyle = '#9bbc0f';
+    gctx.fillRect(9 * TILE + 3, TILE + 2, TILE * 2 - 6, TILE - 4);
+    gctx.fillStyle = '#0f380f';
+    gctx.font = '8px "Press Start 2P", monospace';
+    gctx.textAlign = 'center';
+    gctx.fillText('SANH A', 10 * TILE, 13);
+    // Trees, bags, player
+    TREES.forEach(([tx, ty]) => drawTree(tx, ty));
+    bags.forEach(b => { if (!b.got) drawBag(b.x, b.y); });
+    drawPlayer();
+  }
+
+  function setMsg(t) { document.getElementById('gameMsg').textContent = t; }
+
+  function winGame() {
+    won = true;
+    document.getElementById('winBanner').classList.add('show');
+    const questItems = document.querySelectorAll('.quest li');
+    if (questItems[0]) questItems[0].classList.add('done');
+    if (questItems[3]) questItems[3].classList.add('done');
+    setMsg('Đã vào Sảnh A — hẹn gặp ở lễ tốt nghiệp!');
+    spawnConfetti();
+    drawGame();
+  }
+
+  function tryMove(dx, dy) {
+    if (!gameStarted || won || moving) return;
+    const nx = player.x + dx, ny = player.y + dy;
+    if (isDoor(nx, ny)) {
+      if (bagsGot < 3) {
+        setMsg('Cần đủ 3 túi mù mới vào Sảnh A được!');
+        return;
+      }
+      winGame();
+      return;
+    }
+    if (isBlocked(nx, ny)) return;
+    moving = true;
+    const fromX = pxPos.x, fromY = pxPos.y;
+    const toX = nx * TILE, toY = ny * TILE;
+    const start = performance.now(), DUR = 110;
+    (function step(now) {
+      const t = Math.min(1, (now - start) / DUR);
+      pxPos.x = fromX + (toX - fromX) * t;
+      pxPos.y = fromY + (toY - fromY) * t;
+      drawGame();
+      if (t < 1) requestAnimationFrame(step);
+      else {
+        player.x = nx; player.y = ny;
+        moving = false;
+        const bag = bags.find(b => !b.got && b.x === nx && b.y === ny);
+        if (bag) {
+          bag.got = true;
+          bagsGot++;
+          document.getElementById('bagCount').textContent = 'TUI MU: ' + bagsGot + '/3';
+          setMsg(bagsGot === 3 ? 'Đủ 3 túi mù! Vào Sảnh A thôi!' : 'Nhặt được 1 túi mù!');
+          drawGame();
+        }
+      }
+    })(start);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!gameStarted || won) return;
+    const k = e.key;
+    let dx = 0, dy = 0;
+    if (k === 'ArrowUp' || k === 'w' || k === 'W') dy = -1;
+    else if (k === 'ArrowDown' || k === 's' || k === 'S') dy = 1;
+    else if (k === 'ArrowLeft' || k === 'a' || k === 'A') dx = -1;
+    else if (k === 'ArrowRight' || k === 'd' || k === 'D') dx = 1;
+    else return;
+    e.preventDefault();
+    tryMove(dx, dy);
+  });
+
+  document.querySelectorAll('.dpad button').forEach(btn => {
+    btn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      tryMove(parseInt(btn.dataset.dx), parseInt(btn.dataset.dy));
+    });
+  });
+
+  /* ============ Start / dialogue / confetti ============ */
   const message = "Ê mọi người! Thứ Sáu 23/10 này mình tốt nghiệp rồi. 9:30 – 11:00 mình ở Sảnh A, rảnh thì ghé chụp hình chung với mình cho vui nhé! Bạn nào đến cũng có 1 túi mù may mắn mang về nữa đó!";
 
-  function startGame() {
-    const btn = document.getElementById('startBtn');
-    btn.disabled = true;
-    btn.textContent = "✓ NHIEM VU DA NHAN";
-    document.getElementById('dialogue').classList.add('show');
-    let i = 0;
-    const el = document.getElementById('dialogueText');
-    const typer = setInterval(() => {
-      el.textContent += message[i];
-      i++;
-      if (i >= message.length) clearInterval(typer);
-    }, 28);
+  function spawnConfetti() {
     const colors = ['#0f380f', '#306230', '#8bac0f'];
     for (let n = 0; n < 70; n++) {
       const d = document.createElement('div');
@@ -283,6 +523,26 @@
       setTimeout(() => d.remove(), 5000);
     }
   }
+
+  function startGame() {
+    const btn = document.getElementById('startBtn');
+    btn.disabled = true;
+    btn.textContent = "✓ NHIEM VU DA NHAN";
+    document.getElementById('dialogue').classList.add('show');
+    document.getElementById('gameSection').classList.add('show');
+    gameStarted = true;
+    let i = 0;
+    const el = document.getElementById('dialogueText');
+    const typer = setInterval(() => {
+      el.textContent += message[i];
+      i++;
+      if (i >= message.length) clearInterval(typer);
+    }, 28);
+    spawnConfetti();
+    drawGame();
+  }
+
+  drawGame();
 </script>
 </body>
 </html>
