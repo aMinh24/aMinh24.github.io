@@ -1,38 +1,301 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="/">
-
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="e_commerce_app">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>e_commerce_app</title>
-  <link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thư Mời Dự Lễ Tốt Nghiệp — Minh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Be+Vietnam+Pro:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #10102a;
+    background-image:
+      radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+      radial-gradient(2px 2px at 130px 90px, #ffd23f, transparent),
+      radial-gradient(1px 1px at 70px 160px, #fff, transparent),
+      radial-gradient(2px 2px at 190px 40px, #4ecdc4, transparent),
+      radial-gradient(1px 1px at 250px 120px, #fff, transparent),
+      radial-gradient(2px 2px at 320px 180px, #ff5d8f, transparent);
+    background-size: 360px 220px;
+    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    color: #f5f0ff;
+    padding: 24px 12px 48px;
+  }
+  .screen {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #1c1c40;
+    border: 4px solid #ffd23f;
+    box-shadow: 0 0 0 4px #0a0a1e, 0 0 40px rgba(255, 210, 63, .25);
+    position: relative;
+    overflow: hidden;
+  }
+  .screen::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,.12) 0 2px, transparent 2px 4px);
+    pointer-events: none;
+  }
+  .inner { padding: 32px 24px 36px; position: relative; z-index: 1; }
+  .topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px; color: #4ecdc4; letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  .topbar .hp { color: #ff5d8f; }
+  .art { display: flex; justify-content: center; gap: 24px; margin: 8px 0 20px; }
+  .art canvas { image-rendering: pixelated; }
+  h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(20px, 6vw, 32px);
+    line-height: 1.5;
+    text-align: center;
+    color: #ffd23f;
+    text-shadow: 4px 4px 0 #b8860b, 8px 8px 0 rgba(0,0,0,.4);
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 28px;
+  }
+  .subtitle span { color: #ff5d8f; }
+  #startBtn {
+    display: block; margin: 0 auto 28px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px; color: #10102a;
+    background: #ffd23f;
+    border: 0; padding: 16px 28px;
+    box-shadow: inset -4px -4px 0 rgba(0,0,0,.25), 0 6px 0 #b8860b;
+    cursor: pointer;
+  }
+  #startBtn:active { transform: translateY(4px); box-shadow: inset -4px -4px 0 rgba(0,0,0,.25), 0 2px 0 #b8860b; }
+  #startBtn:disabled { background: #7bed9f; box-shadow: inset -4px -4px 0 rgba(0,0,0,.25), 0 6px 0 #2e8b57; cursor: default; }
+  .dialogue {
+    display: none;
+    background: #10102a;
+    border: 4px solid #f5f0ff;
+    padding: 18px;
+    font-size: 17px; line-height: 1.6;
+    min-height: 120px;
+    margin-bottom: 28px;
+  }
+  .dialogue.show { display: block; }
+  .dialogue .name { color: #4ecdc4; font-weight: 900; margin-bottom: 6px; }
+  .cursor { display: inline-block; width: 10px; animation: blink 1s steps(1) infinite; color: #ffd23f; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .section-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px; color: #4ecdc4;
+    margin: 0 0 14px; letter-spacing: 1px;
+  }
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+  @media (max-width: 560px) { .info-grid { grid-template-columns: 1fr; } }
+  .panel {
+    background: #2a2a55;
+    border: 3px solid #f5f0ff;
+    box-shadow: inset -3px -3px 0 rgba(0,0,0,.3);
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .panel .label { font-family: 'Press Start 2P', monospace; font-size: 9px; color: #ffd23f; margin-bottom: 10px; }
+  .panel .value { font-size: 16px; font-weight: 700; line-height: 1.4; }
+  .quest { margin-bottom: 28px; }
+  .quest ul { list-style: none; }
+  .quest li {
+    background: #2a2a55;
+    border: 3px solid #f5f0ff;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    font-size: 16px; font-weight: 700;
+  }
+  .quest li::before { content: "□ "; color: #ffd23f; font-size: 18px; }
+  .note {
+    background: #1a3a2a;
+    border: 3px solid #7bed9f;
+    padding: 18px;
+    margin-bottom: 28px;
+    font-size: 16px; line-height: 1.6;
+  }
+  .note b { color: #ffd23f; }
+  .gift {
+    background: #3a1a2e;
+    border: 3px solid #ff5d8f;
+    padding: 18px;
+    margin-bottom: 28px;
+    font-size: 16px; line-height: 1.6;
+  }
+  .gift b { color: #ffd23f; }
+  footer {
+    text-align: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px; line-height: 2.1;
+    color: #a8a8d8;
+  }
+  footer .heart { color: #ff5d8f; }
+  .confetti {
+    position: fixed; top: -12px; width: 10px; height: 10px;
+    z-index: 9999; pointer-events: none;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: .9; }
+  }
+</style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+<div class="screen">
+  <div class="inner">
+    <div class="topbar">
+      <span>★ GRADUATION QUEST</span>
+      <span class="hp">HP ♥♥♥♥♥</span>
+    </div>
+
+    <div class="art">
+      <canvas id="cap" width="128" height="128"></canvas>
+      <canvas id="heart" width="96" height="96"></canvas>
+      <canvas id="diploma" width="128" height="96"></canvas>
+    </div>
+
+    <h1>THU MOI<br>DU LE TOT NGHIEP</h1>
+    <p class="subtitle">Đến <span>chụp hình chung</span> với mình nhé!</p>
+
+    <button id="startBtn" onclick="startGame()">▶ PRESS START</button>
+
+    <div class="dialogue" id="dialogue">
+      <div class="name">MINH:</div>
+      <span id="dialogueText"></span><span class="cursor">▌</span>
+    </div>
+
+    <div class="section-title">■ THONG TIN BUOI LE</div>
+    <div class="info-grid">
+      <div class="panel">
+        <div class="label">NGAY</div>
+        <div class="value">Thứ Sáu<br>23 / 10 / 2026</div>
+      </div>
+      <div class="panel">
+        <div class="label">GIO</div>
+        <div class="value">9:30 – 11:00</div>
+      </div>
+      <div class="panel">
+        <div class="label">DIA DIEM</div>
+        <div class="value">Sảnh A</div>
+      </div>
+    </div>
+
+    <div class="quest">
+      <div class="section-title">■ NHIEM VU TRONG NGAY</div>
+      <ul>
+        <li>Đến Sảnh A gặp Minh</li>
+        <li>Chụp hình chung với Minh</li>
+        <li>Chụp hình nhóm bạn bè</li>
+        <li>Nhận 1 túi mù may mắn</li>
+      </ul>
+    </div>
+
+    <div class="gift">
+      🎁 <b>Quà may mắn:</b> bạn nào đến cũng nhận được 1 túi mù may mắn mang về!
+    </div>
+
+    <div class="note">
+      <b>Lưu ý:</b> mọi người gặp nhau chụp hình ở ngoài thôi, không vào trong xem lễ nhé!
+    </div>
+
+    <footer>
+      PLAYER 1: MINH — CLASS OF 2026<br>
+      PLAYER 2: CAC BAN <span class="heart">♥</span><br>
+      MADE WITH <span class="heart">♥</span> BY MINH
+    </footer>
+  </div>
+</div>
+
+<script>
+  function drawPixels(id, rows, palette, scale) {
+    const c = document.getElementById(id);
+    const ctx = c.getContext('2d');
+    const h = rows.length, w = rows[0].length;
+    c.width = w * scale; c.height = h * scale;
+    rows.forEach((row, y) => {
+      [...row].forEach((ch, x) => {
+        if (ch === '.' || !palette[ch]) return;
+        ctx.fillStyle = palette[ch];
+        ctx.fillRect(x * scale, y * scale, scale, scale);
+      });
+    });
+  }
+
+  // Graduation cap
+  drawPixels('cap', [
+    "................",
+    "................",
+    ".....KKKKKK.....",
+    "....KKKKKKKK....",
+    "...KKKKKKKKKK...",
+    "..KKKKKKKKKKKK..",
+    "..KKKKKKKKKKKK..",
+    "...KKKKKKKKKK...",
+    "....KKKKKKKK....",
+    ".....TTTTTT.....",
+    "......TTTT......",
+    "......TTYT......",
+    "......TTYY......",
+    "......TTYY......",
+    ".......YY.......",
+    "................",
+  ], { K: '#22223a', T: '#ffd23f', Y: '#ff9f1c' }, 8);
+
+  // Heart
+  drawPixels('heart', [
+    ".XX...XX.",
+    "XXXXXXXXX",
+    "XXXXXXXXX",
+    "XXXXXXXXX",
+    ".XXXXXXX.",
+    "..XXXXX..",
+    "...XXX...",
+    "....X....",
+  ], { X: '#ff5d8f' }, 12);
+
+  // Diploma scroll
+  drawPixels('diploma', [
+    "............",
+    ".WWWWWWWWWW.",
+    ".W........W.",
+    ".W..RRRR..W.",
+    ".W..RRRR..W.",
+    ".W........W.",
+    ".WWWWWWWWWW.",
+    "............",
+  ], { W: '#fff8e7', R: '#ff4757' }, 12);
+
+  const message = "Ê mọi người! Thứ Sáu 23/10 này mình tốt nghiệp rồi. 9:30 – 11:00 mình ở Sảnh A, rảnh thì ghé chụp hình chung với mình cho vui nhé! Bạn nào đến cũng có 1 túi mù may mắn mang về nữa đó!";
+
+  function startGame() {
+    const btn = document.getElementById('startBtn');
+    btn.disabled = true;
+    btn.textContent = "✓ NHIEM VU DA NHAN";
+    document.getElementById('dialogue').classList.add('show');
+    let i = 0;
+    const el = document.getElementById('dialogueText');
+    const typer = setInterval(() => {
+      el.textContent += message[i];
+      i++;
+      if (i >= message.length) clearInterval(typer);
+    }, 28);
+    const colors = ['#ffd23f', '#ff5d8f', '#4ecdc4', '#7bed9f', '#ff9f1c'];
+    for (let n = 0; n < 70; n++) {
+      const d = document.createElement('div');
+      d.className = 'confetti';
+      d.style.left = Math.random() * 100 + 'vw';
+      d.style.background = colors[Math.floor(Math.random() * colors.length)];
+      d.style.animationDuration = (2.2 + Math.random() * 2) + 's';
+      d.style.animationDelay = (Math.random() * 0.6) + 's';
+      document.body.appendChild(d);
+      setTimeout(() => d.remove(), 5000);
+    }
+  }
+</script>
 </body>
 </html>
