@@ -225,7 +225,8 @@
       </div>
       <div class="win" id="winBanner">
         <b>QUEST COMPLETE!</b><br>
-        Bạn đã đến Sảnh A — hẹn gặp 9:30, Thứ Sáu 23/10 nhé!
+        Bạn thắng được <span id="prizeCount">?</span> túi mù!<br>
+        Cap màn hình này lại rồi đưa Minh để nhận quà nhé!
       </div>
     </div>
 
@@ -251,12 +252,12 @@
         <li>Đến Sảnh A gặp Minh</li>
         <li>Chụp hình chung với Minh</li>
         <li>Chụp hình nhóm bạn bè</li>
-        <li>Nhận 1 túi mù may mắn</li>
+        <li>Nhận 3–6 túi mù may mắn</li>
       </ul>
     </div>
 
     <div class="gift">
-      <b>Quà may mắn:</b> bạn nào đến cũng nhận được 1 túi mù may mắn mang về!
+      <b>Quà may mắn:</b> chơi game thắng được 3–6 túi mù! Nhớ cap màn hình lại để nhận quà nhé!
     </div>
 
     <div class="note">
@@ -441,6 +442,8 @@
 
   function winGame() {
     won = true;
+    const prize = 3 + Math.floor(Math.random() * 4); // 3–6 túi mù
+    document.getElementById('prizeCount').textContent = prize;
     document.getElementById('winBanner').classList.add('show');
     const questItems = document.querySelectorAll('.quest li');
     if (questItems[0]) questItems[0].classList.add('done');
@@ -508,7 +511,7 @@
   });
 
   /* ============ Start / dialogue / confetti ============ */
-  const message = "Ê mọi người! Thứ Sáu 23/10 này mình tốt nghiệp rồi. 9:30 – 11:00 mình ở Sảnh A, rảnh thì ghé chụp hình chung với mình cho vui nhé! Bạn nào đến cũng có 1 túi mù may mắn mang về nữa đó!";
+  const message = "Ê mọi người! Thứ Sáu 23/10 này mình tốt nghiệp rồi. 9:30 – 11:00 mình ở Sảnh A, rảnh thì ghé chụp hình chung với mình cho vui nhé! Bạn nào chơi game thắng cũng nhận được 3–6 túi mù may mắn mang về — nhớ cap màn hình lại nhé!";
 
   function spawnConfetti() {
     const colors = ['#0f380f', '#306230', '#8bac0f'];
