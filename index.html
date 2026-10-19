@@ -9,132 +9,116 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    background: #10102a;
-    background-image:
-      radial-gradient(2px 2px at 20px 30px, #fff, transparent),
-      radial-gradient(2px 2px at 130px 90px, #ffd23f, transparent),
-      radial-gradient(1px 1px at 70px 160px, #fff, transparent),
-      radial-gradient(2px 2px at 190px 40px, #4ecdc4, transparent),
-      radial-gradient(1px 1px at 250px 120px, #fff, transparent),
-      radial-gradient(2px 2px at 320px 180px, #ff5d8f, transparent);
-    background-size: 360px 220px;
+    background: #306230;
     font-family: 'Be Vietnam Pro', system-ui, sans-serif;
-    color: #f5f0ff;
+    color: #0f380f;
     padding: 24px 12px 48px;
   }
   .screen {
     max-width: 640px;
     margin: 0 auto;
-    background: #1c1c40;
-    border: 4px solid #ffd23f;
-    box-shadow: 0 0 0 4px #0a0a1e, 0 0 40px rgba(255, 210, 63, .25);
-    position: relative;
-    overflow: hidden;
+    background: #9bbc0f;
+    border: 4px solid #0f380f;
+    box-shadow: 8px 8px 0 #0f380f;
   }
-  .screen::after {
-    content: "";
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(0deg, rgba(0,0,0,.12) 0 2px, transparent 2px 4px);
-    pointer-events: none;
-  }
-  .inner { padding: 32px 24px 36px; position: relative; z-index: 1; }
+  .inner { padding: 28px 24px 32px; }
   .topbar {
     display: flex; justify-content: space-between; align-items: center;
     font-family: 'Press Start 2P', monospace;
-    font-size: 10px; color: #4ecdc4; letter-spacing: 1px;
-    margin-bottom: 24px;
+    font-size: 10px; color: #0f380f; letter-spacing: 1px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 4px solid #0f380f;
   }
-  .topbar .hp { color: #ff5d8f; }
-  .art { display: flex; justify-content: center; gap: 24px; margin: 8px 0 20px; }
+  .art { display: flex; justify-content: center; gap: 24px; margin: 4px 0 20px; }
   .art canvas { image-rendering: pixelated; }
   h1 {
     font-family: 'Press Start 2P', monospace;
     font-size: clamp(20px, 6vw, 32px);
     line-height: 1.5;
     text-align: center;
-    color: #ffd23f;
-    text-shadow: 4px 4px 0 #b8860b, 8px 8px 0 rgba(0,0,0,.4);
-    margin-bottom: 8px;
+    color: #0f380f;
+    margin-bottom: 12px;
   }
   .subtitle {
     text-align: center;
     font-size: 17px; font-weight: 700;
     margin-bottom: 28px;
   }
-  .subtitle span { color: #ff5d8f; }
   #startBtn {
     display: block; margin: 0 auto 28px;
     font-family: 'Press Start 2P', monospace;
-    font-size: 14px; color: #10102a;
-    background: #ffd23f;
+    font-size: 14px; color: #9bbc0f;
+    background: #0f380f;
     border: 0; padding: 16px 28px;
-    box-shadow: inset -4px -4px 0 rgba(0,0,0,.25), 0 6px 0 #b8860b;
+    box-shadow: 0 6px 0 #306230;
     cursor: pointer;
   }
-  #startBtn:active { transform: translateY(4px); box-shadow: inset -4px -4px 0 rgba(0,0,0,.25), 0 2px 0 #b8860b; }
-  #startBtn:disabled { background: #7bed9f; box-shadow: inset -4px -4px 0 rgba(0,0,0,.25), 0 6px 0 #2e8b57; cursor: default; }
+  #startBtn:active { transform: translateY(4px); box-shadow: 0 2px 0 #306230; }
+  #startBtn:disabled { background: #306230; box-shadow: 0 6px 0 #0f380f; cursor: default; }
   .dialogue {
     display: none;
-    background: #10102a;
-    border: 4px solid #f5f0ff;
+    background: #9bbc0f;
+    border: 4px solid #0f380f;
+    outline: 2px solid #0f380f;
+    outline-offset: -10px;
     padding: 18px;
     font-size: 17px; line-height: 1.6;
     min-height: 120px;
     margin-bottom: 28px;
   }
   .dialogue.show { display: block; }
-  .dialogue .name { color: #4ecdc4; font-weight: 900; margin-bottom: 6px; }
-  .cursor { display: inline-block; width: 10px; animation: blink 1s steps(1) infinite; color: #ffd23f; }
+  .dialogue .name { color: #306230; font-weight: 900; margin-bottom: 6px; }
+  .cursor { display: inline-block; width: 10px; animation: blink 1s steps(1) infinite; color: #0f380f; }
   @keyframes blink { 50% { opacity: 0; } }
   .section-title {
     font-family: 'Press Start 2P', monospace;
-    font-size: 12px; color: #4ecdc4;
+    font-size: 12px; color: #0f380f;
     margin: 0 0 14px; letter-spacing: 1px;
   }
   .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 28px; }
   @media (max-width: 560px) { .info-grid { grid-template-columns: 1fr; } }
   .panel {
-    background: #2a2a55;
-    border: 3px solid #f5f0ff;
-    box-shadow: inset -3px -3px 0 rgba(0,0,0,.3);
+    background: #8bac0f;
+    border: 3px solid #0f380f;
+    box-shadow: 4px 4px 0 #306230;
     padding: 14px 12px;
     text-align: center;
   }
-  .panel .label { font-family: 'Press Start 2P', monospace; font-size: 9px; color: #ffd23f; margin-bottom: 10px; }
+  .panel .label { font-family: 'Press Start 2P', monospace; font-size: 9px; color: #306230; margin-bottom: 10px; }
   .panel .value { font-size: 16px; font-weight: 700; line-height: 1.4; }
   .quest { margin-bottom: 28px; }
   .quest ul { list-style: none; }
   .quest li {
-    background: #2a2a55;
-    border: 3px solid #f5f0ff;
+    background: #8bac0f;
+    border: 3px solid #0f380f;
     padding: 12px 14px;
     margin-bottom: 8px;
     font-size: 16px; font-weight: 700;
   }
-  .quest li::before { content: "□ "; color: #ffd23f; font-size: 18px; }
+  .quest li::before { content: "□ "; color: #0f380f; font-size: 18px; }
   .note {
-    background: #1a3a2a;
-    border: 3px solid #7bed9f;
+    background: #8bac0f;
+    border: 3px solid #0f380f;
     padding: 18px;
     margin-bottom: 28px;
     font-size: 16px; line-height: 1.6;
   }
-  .note b { color: #ffd23f; }
   .gift {
-    background: #3a1a2e;
-    border: 3px solid #ff5d8f;
+    background: #8bac0f;
+    border: 3px solid #0f380f;
     padding: 18px;
     margin-bottom: 28px;
     font-size: 16px; line-height: 1.6;
   }
-  .gift b { color: #ffd23f; }
   footer {
     text-align: center;
     font-family: 'Press Start 2P', monospace;
     font-size: 10px; line-height: 2.1;
-    color: #a8a8d8;
+    color: #0f380f;
+    border-top: 4px solid #0f380f;
+    padding-top: 16px;
   }
-  footer .heart { color: #ff5d8f; }
   .confetti {
     position: fixed; top: -12px; width: 10px; height: 10px;
     z-index: 9999; pointer-events: none;
@@ -150,7 +134,7 @@
   <div class="inner">
     <div class="topbar">
       <span>★ GRADUATION QUEST</span>
-      <span class="hp">HP ♥♥♥♥♥</span>
+      <span>HP ♥♥♥♥♥</span>
     </div>
 
     <div class="art">
@@ -160,7 +144,7 @@
     </div>
 
     <h1>THU MOI<br>DU LE TOT NGHIEP</h1>
-    <p class="subtitle">Đến <span>chụp hình chung</span> với mình nhé!</p>
+    <p class="subtitle">Đến chụp hình chung với mình nhé!</p>
 
     <button id="startBtn" onclick="startGame()">▶ PRESS START</button>
 
@@ -196,7 +180,7 @@
     </div>
 
     <div class="gift">
-      🎁 <b>Quà may mắn:</b> bạn nào đến cũng nhận được 1 túi mù may mắn mang về!
+      <b>Quà may mắn:</b> bạn nào đến cũng nhận được 1 túi mù may mắn mang về!
     </div>
 
     <div class="note">
@@ -204,9 +188,8 @@
     </div>
 
     <footer>
-      PLAYER 1: MINH — CLASS OF 2026<br>
-      PLAYER 2: CAC BAN <span class="heart">♥</span><br>
-      MADE WITH <span class="heart">♥</span> BY MINH
+      PLAYER 1 — MINH · CLASS OF 2026<br>
+      PLAYER 2 — CAC BAN
     </footer>
   </div>
 </div>
@@ -226,7 +209,7 @@
     });
   }
 
-  // Graduation cap
+  // Graduation cap (Game Boy palette)
   drawPixels('cap', [
     "................",
     "................",
@@ -239,14 +222,14 @@
     "....KKKKKKKK....",
     ".....TTTTTT.....",
     "......TTTT......",
-    "......TTYT......",
-    "......TTYY......",
-    "......TTYY......",
-    ".......YY.......",
+    "......TTTT......",
+    "......TTTT......",
+    "......TTTT......",
+    ".......TT.......",
     "................",
-  ], { K: '#22223a', T: '#ffd23f', Y: '#ff9f1c' }, 8);
+  ], { K: '#0f380f', T: '#306230' }, 8);
 
-  // Heart
+  // Heart (Game Boy palette)
   drawPixels('heart', [
     ".XX...XX.",
     "XXXXXXXXX",
@@ -256,9 +239,9 @@
     "..XXXXX..",
     "...XXX...",
     "....X....",
-  ], { X: '#ff5d8f' }, 12);
+  ], { X: '#0f380f' }, 12);
 
-  // Gift box (lucky gift)
+  // Gift box (Game Boy palette)
   drawPixels('gift', [
     "..............",
     "....GG...GG...",
@@ -272,7 +255,7 @@
     ".BBBBGGGBBBBB.",
     ".BBBBBBBBBBBB.",
     "..............",
-  ], { G: '#ffd23f', B: '#ff5d8f' }, 10);
+  ], { G: '#0f380f', B: '#306230' }, 10);
 
   const message = "Ê mọi người! Thứ Sáu 23/10 này mình tốt nghiệp rồi. 9:30 – 11:00 mình ở Sảnh A, rảnh thì ghé chụp hình chung với mình cho vui nhé! Bạn nào đến cũng có 1 túi mù may mắn mang về nữa đó!";
 
@@ -288,7 +271,7 @@
       i++;
       if (i >= message.length) clearInterval(typer);
     }, 28);
-    const colors = ['#ffd23f', '#ff5d8f', '#4ecdc4', '#7bed9f', '#ff9f1c'];
+    const colors = ['#0f380f', '#306230', '#8bac0f'];
     for (let n = 0; n < 70; n++) {
       const d = document.createElement('div');
       d.className = 'confetti';
