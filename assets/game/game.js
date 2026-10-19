@@ -400,12 +400,12 @@ function finish() {
   if (!state.best || result.name !== state.best.name || result.reward > state.best.reward
     || (result.reward === state.best.reward && result.height > state.best.height)) state.best = result;
   storageSet(RESULT_KEY, JSON.stringify(state.best));
-  $('gameStatus').textContent = 'Hết 45 giây! Chốt ' + result.reward + ' phần quà ở độ cao ' + result.height + ' m. Nhớ lưu phiếu nhé!';
+  $('gameStatus').textContent = 'Hết 45 giây! Chốt ' + result.reward + ' phần quà ở độ cao ' + result.height + ' m. Nhớ lưu thư mời nhé!';
   renderResult(result, true); drawGame(); beep(740, 0.2, 'triangle'); if (!reducedMotion) confetti();
 }
 function renderResult(r, scroll) {
   activeResult = r; $('result').hidden = false;
-  $('resultName').textContent = r.name ? r.name + ' ơi, có quà nè!' : 'Bạn ơi, có quà nè!';
+  $('resultName').textContent = r.name ? 'Gửi ' + r.name + ' thân mến!' : 'Gửi bạn thân mến!';
   $('ticketCount').textContent = String(r.reward);
   $('ticketCount').setAttribute('aria-label', r.reward + ' phần quà');
   $('resultDetail').textContent = 'Chốt ở ' + r.height + ' m · Cao nhất ' + r.peak + ' m · ' + r.falls + ' lần trượt · 45 giây';
@@ -414,7 +414,7 @@ function renderResult(r, scroll) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.classList.add('gift-icon');
     const use = document.createElementNS('http://www.w3.org/2000/svg', 'use'); use.setAttribute('href', '#gift'); svg.append(use); $('ticketGifts').append(svg);
   }
-  if (scroll) { $('result').scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'center' }); toast('Hết giờ! Chụp màn hình hoặc lưu ảnh phiếu nhận quà nhé.'); }
+  if (scroll) { $('result').scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'center' }); toast('Hết giờ! Chụp màn hình hoặc lưu thư mời để đến nhận quà nhé.'); }
 }
 $('replayBtn').addEventListener('click', () => {
   clearInput(); Object.assign(state, { mode: 'idle', player: newPlayer(), elapsed: 0, time: DURATION,
@@ -440,26 +440,31 @@ $('saveBtn').addEventListener('click', async () => {
     const g = c.getContext('2d'); rect(g, 0, 0, 900, 1050, '#e8ecd9'); rect(g, 30, 30, 840, 990, '#294f40');
     rect(g, 36, 36, 828, 978, '#fcf9e9'); rect(g, 36, 36, 828, 94, '#355e4c');
     g.textAlign = 'center'; g.fillStyle = '#fff5d8'; g.font = 'bold 27px "Be Vietnam Pro",Arial,sans-serif';
-    g.fillText('PHIẾU NHẬN QUÀ · MINH 2026', 450, 96);
-    g.fillStyle = '#6a805c'; g.font = 'bold 18px "Be Vietnam Pro",Arial,sans-serif'; g.fillText('HẾT GIỜ, CHỐT QUÀ NÀO!', 450, 200);
-    g.fillStyle = '#294f40'; const title = r.name ? r.name + ' ơi, có quà nè!' : 'Bạn ơi, có quà nè!';
-    let size = 38; do { g.font = 'bold ' + size + 'px "Be Vietnam Pro",Arial,sans-serif'; size--; } while (g.measureText(title).width > 730 && size > 16);
-    g.fillText(title, 450, 266);
+    g.fillText('THƯ MỜI DỰ LỄ TỐT NGHIỆP', 450, 96);
+    g.fillStyle = '#294f40'; g.font = 'bold 32px "Be Vietnam Pro",Arial,sans-serif';
+    g.fillText('HỒ ANH MINH', 450, 188);
+    g.fillStyle = '#6a805c'; g.font = '19px "Be Vietnam Pro",Arial,sans-serif';
+    g.fillText('Khoa Công nghệ thông tin · Đại học Tôn Đức Thắng', 450, 227);
+    g.fillStyle = '#294f40'; const title = r.name ? 'Gửi ' + r.name + ' thân mến!' : 'Gửi bạn thân mến!';
+    let size = 30; do { g.font = 'bold ' + size + 'px "Be Vietnam Pro",Arial,sans-serif'; size--; } while (g.measureText(title).width > 730 && size > 16);
+    g.fillText(title, 450, 277);
+    g.font = '20px "Be Vietnam Pro",Arial,sans-serif';
+    g.fillText('Minh mời bạn đến dự lễ tốt nghiệp và chụp hình chung!', 450, 316);
     // Số phần quà dùng sans-serif đậm, không dùng font pixel khó phân biệt 3/8.
-    g.fillStyle = '#b85e34'; g.font = '900 185px "Be Vietnam Pro",Arial,sans-serif'; g.fillText(String(r.reward), 450, 482);
+    g.fillStyle = '#b85e34'; g.font = '900 150px "Be Vietnam Pro",Arial,sans-serif'; g.fillText(String(r.reward), 450, 505);
     g.fillStyle = '#48674d'; g.font = 'bold 24px "Be Vietnam Pro",Arial,sans-serif'; g.fillText('PHẦN QUÀ ĐANG CHỜ BẠN', 450, 548);
     for (let i = 0; i < r.reward; i++) gift(g, 450 + (i - (r.reward - 1) / 2) * 65, 625, 1.8);
     g.font = '19px "Be Vietnam Pro",Arial,sans-serif'; g.fillText('Chốt ở ' + r.height + ' m · Cao nhất ' + r.peak + ' m · 45 giây', 450, 692);
     rect(g, 85, 735, 730, 115, '#edf0dc'); g.fillStyle = '#294f40'; g.font = 'bold 23px "Be Vietnam Pro",Arial,sans-serif';
-    g.fillText('Giữ ảnh này để gặp Minh nhận quà nhé!', 450, 783);
+    g.fillText('Giữ thư mời này để gặp Minh nhận quà nhé!', 450, 783);
     g.font = '18px "Be Vietnam Pro",Arial,sans-serif'; g.fillText('Mỗi bạn nhận quà một lần theo kết quả tốt nhất.', 450, 818);
     g.fillStyle = '#4c6a4f'; g.font = 'bold 23px "Be Vietnam Pro",Arial,sans-serif'; g.fillText('23/10/2026 · 09:30–11:00', 450, 913);
     g.font = '21px "Be Vietnam Pro",Arial,sans-serif'; g.fillText('Sảnh A · Đại học Tôn Đức Thắng', 450, 960);
     const blob = await new Promise(resolve => c.toBlob(resolve, 'image/png')); if (!blob) throw new Error('Không tạo được ảnh');
-    const url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = 'Minh-tot-nghiep-phieu-nhan-qua.png';
+    const url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = 'Ho-Anh-Minh-thu-moi-le-tot-nghiep.png';
     document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 10000);
-    toast('Đã tạo ảnh! Nếu máy không tải xuống, chụp màn hình phiếu nhé.');
-  } catch { toast('Chưa lưu được ảnh. Bạn chụp màn hình phiếu nhận quà nhé!'); }
+    toast('Đã tạo thư mời! Nếu máy không tải xuống, chụp màn hình thư mời nhé.');
+  } catch { toast('Chưa lưu được ảnh. Bạn chụp màn hình thư mời để nhận quà nhé!'); }
   finally { button.disabled = false; }
 });
 const storedName = storageGet('minh-grad-name'); if (storedName) $('playerName').value = storedName.slice(0, 28);
