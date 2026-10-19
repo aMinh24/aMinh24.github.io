@@ -156,7 +156,7 @@
     <div class="art">
       <canvas id="cap" width="128" height="128"></canvas>
       <canvas id="heart" width="96" height="96"></canvas>
-      <canvas id="diploma" width="128" height="96"></canvas>
+      <canvas id="gift" width="140" height="120"></canvas>
     </div>
 
     <h1>THU MOI<br>DU LE TOT NGHIEP</h1>
@@ -258,17 +258,21 @@
     "....X....",
   ], { X: '#ff5d8f' }, 12);
 
-  // Diploma scroll
-  drawPixels('diploma', [
-    "............",
-    ".WWWWWWWWWW.",
-    ".W........W.",
-    ".W..RRRR..W.",
-    ".W..RRRR..W.",
-    ".W........W.",
-    ".WWWWWWWWWW.",
-    "............",
-  ], { W: '#fff8e7', R: '#ff4757' }, 12);
+  // Gift box (lucky gift)
+  drawPixels('gift', [
+    "..............",
+    "....GG...GG...",
+    "..GGGG..GGGG..",
+    "..GGGGGGGGGG..",
+    ".....GGGG.....",
+    ".BBBBBBBBBBBB.",
+    ".BBBBGGGBBBBB.",
+    ".BBBBGGGBBBBB.",
+    ".BBBBGGGBBBBB.",
+    ".BBBBGGGBBBBB.",
+    ".BBBBBBBBBBBB.",
+    "..............",
+  ], { G: '#ffd23f', B: '#ff5d8f' }, 10);
 
   const message = "Ê mọi người! Thứ Sáu 23/10 này mình tốt nghiệp rồi. 9:30 – 11:00 mình ở Sảnh A, rảnh thì ghé chụp hình chung với mình cho vui nhé! Bạn nào đến cũng có 1 túi mù may mắn mang về nữa đó!";
 
